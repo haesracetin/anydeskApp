@@ -1,0 +1,181 @@
+import subprocess
+import pyautogui
+import time
+import json
+import os
+
+with open('anydesk.json', 'r') as f:
+    config = json.load(f)
+
+
+def start_anydesk():
+    try:
+        app_path = r'C:\Program Files (x86)\AnyDesk\AnyDesk.exe'
+        subprocess.run([
+            'powershell',
+            'Start-Process',
+            f'"{app_path}"',
+            '-Verb',
+            'runAs'
+        ], shell=True)
+        print("AnyDesk application started as administrator.")
+    except Exception as e:
+        print(f"An error occurred while starting the AnyDesk application: {e}")
+
+
+def login():
+    try:
+        time.sleep(5)
+        login_location = pyautogui.locateOnScreen(
+            config['images']['login_button']['path'], confidence=0.88)
+        if login_location:
+            pyautogui.leftClick(login_location)
+            print("Login button clicked")
+        else:
+            print("Login button could not be clicked")
+    except Exception as e:
+        print(f"An error occurred while clicking the login button: {e}")
+
+
+def fill_login():
+    try:
+        time.sleep(5)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        pyautogui.write("esractn235")
+        pyautogui.hotkey('ctrl', 'alt', 'q')
+        pyautogui.write("gmail.com")
+    except Exception as e:
+        print(f"An error occurred while writing the email: {e}")
+
+    try:
+        time.sleep(5)
+        pyautogui.doubleClick(x=1518, y=257)
+        pyautogui.leftClick(x=1518, y=257)
+    except Exception as e:
+        print(f"An error occurred during the first click: {e}")
+
+    try:
+        time.sleep(5)
+        pyautogui.write("Selenium235.")
+    except Exception as e:
+        print(f"An error occurred while writing the password: {e}")
+
+    try:
+        time.sleep(5)
+        pyautogui.leftClick(x=1627, y=295)
+    except Exception as e:
+        print(f"An error occurred during the final click in login: {e}")
+
+
+def set_password():
+    try:
+        time.sleep(5)
+        pyautogui.leftClick(x=1891, y=68)
+        time.sleep(2)
+        pyautogui.leftClick(x=1891, y=68)
+    except Exception as e:
+        print(f"An error occurred while clicking to set the password: {e}")
+
+    try:
+        time.sleep(5)
+        pyautogui.doubleClick(x=1826, y=154)
+    except Exception as e:
+        print(f"An error occurred during the password setting process: {e}")
+
+    try:
+        time.sleep(5)
+        pyautogui.write("deneme123")
+        time.sleep(2)
+        pyautogui.leftClick(x=912, y=539)
+        time.sleep(2)
+        pyautogui.write("deneme123")
+        time.sleep(2)
+        pyautogui.leftClick(x=945, y=659)
+        time.sleep(2)
+        pyautogui.leftClick(x=927, y=807)
+        time.sleep(2)
+        pyautogui.leftClick(x=986, y=702)
+        time.sleep(5)
+        pyautogui.leftClick(x=514, y=19)
+    except Exception as e:
+        print(f"An error occurred during the password confirmation: {e}")
+
+
+def connect(duration_minutes):
+    try:
+        time.sleep(5)
+        pyautogui.click(x=500, y=500)
+        time.sleep(2)
+        pyautogui.leftClick(x=347, y=69)
+        pyautogui.write("1677821865")
+    except Exception as e:
+        print(f"An error occurred while writing the ID: {e}")
+
+    try:
+        time.sleep(2)
+        connect_location = pyautogui.locateOnScreen(
+            config['images']['connect_button']['path'], confidence=0.88)
+        if connect_location:
+            pyautogui.leftClick(connect_location)
+            time.sleep(5)
+            pyautogui.write("deneme123")
+            time.sleep(2)
+            pyautogui.press('enter')
+            print("Connect button clicked")
+
+            # Bağlantı süresini bekleme
+            print(f"Connected. Waiting for {duration_minutes} minutes...")
+            time.sleep(duration_minutes * 60)
+        else:
+            print("Connect button could not be clicked")
+    except Exception as e:
+        print(f"An error occurred while clicking the connect button: {e}")
+
+
+def logout():
+    try:
+        login_location = pyautogui.locateOnScreen(config['images']['login_button']['path'], confidence=0.88)
+        if login_location:
+            pyautogui.leftClick(login_location)
+            print("Login button clicked")
+        else:
+            print("Login button could not be clicked")
+    except Exception as e:
+        print(f"An error occurred while clicking the login button: {e}")
+
+    try:
+        time.sleep(5)
+        logout_location = pyautogui.locateOnScreen(config['images']['logout_button']['path'], confidence=0.88)
+        if logout_location:
+            pyautogui.leftClick(logout_location)
+            pyautogui.doubleClick(logout_location)
+            print("Logout button clicked")
+        else:
+            print("Logout button could not be found on the screen.")
+    except Exception as e:
+        print(f"An error occurred while trying to click the logout button: {e}")
+
+
+def close_anydesk():
+    try:
+        os.system("taskkill /f /im AnyDesk.exe")
+        print("AnyDesk application closed.")
+    except Exception as e:
+        print(f"An error occurred while closing the AnyDesk application: {e}")
+
+
+def main():
+    duration_minutes = int(input("How many minutes do you want to stay connected? "))
+
+    start_anydesk()
+    login()
+    fill_login()
+    set_password()
+    connect(duration_minutes)
+    logout()
+    close_anydesk()
+
+
+if __name__ == "__main__":
+    main()
