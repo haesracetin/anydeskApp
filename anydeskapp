@@ -42,7 +42,7 @@ def fill_login():
         time.sleep(5)
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('backspace')
-        pyautogui.write("esractn235")
+        pyautogui.write("mail")
         pyautogui.hotkey('ctrl', 'alt', 'q')
         pyautogui.write("gmail.com")
     except Exception as e:
@@ -57,7 +57,7 @@ def fill_login():
 
     try:
         time.sleep(5)
-        pyautogui.write("Selenium235.")
+        pyautogui.write("password")
     except Exception as e:
         print(f"An error occurred while writing the password: {e}")
 
@@ -108,7 +108,7 @@ def connect(duration_minutes):
         pyautogui.click(x=500, y=500)
         time.sleep(2)
         pyautogui.leftClick(x=347, y=69)
-        pyautogui.write("1677821865")
+        pyautogui.write("your_id")
     except Exception as e:
         print(f"An error occurred while writing the ID: {e}")
 
